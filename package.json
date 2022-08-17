@@ -1,10 +1,11 @@
 {
-	"name": "touchme",
-	"version": "0.3.4",
-	"homepage": "https://touchme.chromatone.center",
+	"name": "36-questions",
+	"version": "0.0.1",
+	"private": true,
+	"homepage": "https://questions.playtronica.com",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/chromatone/touchme.git"
+		"url": "https://github.com/chromatone/questions.git"
 	},
 	"funding": {
 		"type": "ko-fi",
@@ -16,8 +17,8 @@
 	"scripts": {
 		"build": "vite build ",
 		"deploy": "sh deploy.sh",
-		"dev": "vite --host --port 3442",
-		"serve": "vite preview --port 3400",
+		"dev": "vite --host --port 3636",
+		"serve": "vite preview --port 3600",
 		"server": "node server.js"
 	},
 	"dependencies": {

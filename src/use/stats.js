@@ -51,7 +51,7 @@ export async function enter() {
     let timestamp = Date.now()
 
     const { data } = useMyFetch('register').post({
-      "email": nid.value + '@touch.me',
+      "email": nid.value + '@questions.playtronica.com',
       "password": nid.value,
       "createdAt": timestamp,
       "pulse": timestamp
@@ -63,7 +63,7 @@ export async function enter() {
     })
   } else {
     const { data } = useMyFetch('login').post({
-      "email": nid.value + '@touch.me',
+      "email": nid.value + '@questions.playtronica.com',
       "password": nid.value,
     }).json()
 
