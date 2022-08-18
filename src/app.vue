@@ -2,7 +2,6 @@
 import { useRafFn } from '@vueuse/core'
 import { createNoise2D } from 'simplex-noise';
 import ColorHash from "color-hash";
-import scenes from '~pages'
 import { useScene, activeScene } from '~/use/scene';
 import { useMidi, useKeyboard } from '~/use/midi'
 import { useRoute, useRouter } from 'vue-router'
@@ -50,17 +49,8 @@ onKeyStroke([' ', 'Enter'], () => {
 })
 
 function randomScene() {
-  let rnd, scs, index, path
-  for (let i = 0; i < 20; i++) {
-    rnd = Math.random()
-    scs = Object.values(scenes)
-    index = rnd * (scs.length)
-    path = scs[Math.floor(index)].path
-    if (!route.path.includes(path)) break
-  }
-
   changed.value = true
-  return path
+  return Number(route.path.slice(1)) + 1 + ''
 }
 
 onMounted(() => {
@@ -74,8 +64,8 @@ onMounted(() => {
 .flex.flex-col.h-100vh.w-full 
   // (:style="{ background }"  )
   state-overlay
-  .absolute.bottom-2.text-center.flex.flex-col.items-center.w-full(v-if="!changed")
-    .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to randomly change current scene.
+  .absolute.bottom-20.text-center.flex.flex-col.items-center.w-full(v-if="!changed")
+    .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question
   state-start
   transition(name="fade")
     stats-panel()
@@ -93,31 +83,15 @@ onMounted(() => {
       rect(
         filter="url(#noiseFilter)"
         fill="hsl(20,70%,60%)"
-        opacity="0.1"
+        opacity="0.4"
         :width="width"
         :height="height"
         )
-      router-view(v-slot="{ Component }")
-        transition(name="fade" mode="out-in")
-          keep-alive
-            component#content(:is="Component")
       scene-stats
-    .absolute.left-0.top-10.flex.flex-col.gap-2.m-2.opacity-20.hover_opacity-100.transition
-      router-link.button.p-2.cursor-pointer.text-3xl( 
-        v-for="(scene, i) in scenes" :key="scene.path"
-        @click="changed = true"
-        :to="scene"
-        :class="{ active: $route.path == scene.path }"
-        v-tooltip.right="scene.name.charAt(0).toUpperCase() + scene.name.slice(1) + ' scene'"
-        )
+    router-view(v-slot="{ Component }")
+      transition(name="fade" mode="out-in")
+        component#content(:is="Component")
 
-        icon-ph-plugs-connected(v-if="scene.name == 'index'")
-        icon-bx-tachometer(v-if="scene.name == 'level'")
-        icon-bi-flower1(v-if="scene.name == 'rose'")
-        icon-la-plus(v-if="scene.name == 'cross'")
-        icon-ri-donut-chart-fill(v-if="scene.name == 'donut'")
-        icon-ic-outline-bar-chart(v-if="scene.name == 'stats'")
-        icon-ph-spiral(v-if="scene.name == 'spiral'")
 //debug
 </template>
 

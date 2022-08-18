@@ -7,9 +7,6 @@ import WindiCSS from 'vite-plugin-windicss'
 import AutoImport from 'unplugin-auto-import/vite'
 import { VitePWA } from 'vite-plugin-pwa'
 import vue from '@vitejs/plugin-vue'
-import Pages from "vite-plugin-pages";
-import { extendRoutes } from "vitepress-pages";
-import generateSitemap from 'vite-plugin-pages-sitemap'
 
 
 export default defineConfig({
@@ -40,15 +37,6 @@ export default defineConfig({
           '@vueuse/math': ['useClamp'],
         },
       ],
-    }),
-    Pages({
-      dirs: [
-        { dir: "src/scenes", baseRoute: "." },
-      ],
-      routeBlockLang: 'yaml',
-      exclude: ['**/node_modules/**/*.*'],
-      extensions: ['vue'],
-      onRoutesGenerated: routes => (generateSitemap({ routes, hostname: 'https://touchme.chromatone.center' })),
     }),
     Components({
       dirs: ['src/components'],

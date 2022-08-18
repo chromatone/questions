@@ -122,10 +122,9 @@ export function useUserSessions() {
 }
 
 
-
 export function useUsers() {
   const list = ref({})
-  watch(() => user.value?.id, () => {
+  watch(user, () => {
     const { data } = useMyFetch('users').get().json()
     watch(data, d => {
       list.value = d

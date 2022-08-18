@@ -28,7 +28,7 @@ onKeyStroke(' ', ev => {
       v-for="(input, iid) in midi.inputs" 
       :key="iid"
       )
-  midi-log.max-h-40vh.mt-6
+  //- midi-log.max-h-40vh.mt-6
 </template>
 
 <style lang="postcss" scoped>

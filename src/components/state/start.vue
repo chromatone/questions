@@ -37,8 +37,8 @@ const steps = reactive({
   style="left: 50%; top: 50%; transform: translate(-50%, -50%);"
   v-if="!synthOptions.initiated"
   )
-  h2.text-center.text-2xl.my-4 Let's play music with touch 
-  .p-4.flex.flex-col.gap-2(v-if="!midi.enabled") This interactive experience needs Web MIDI API support. Unfortunately, your current browser doesn't provide it. Is it Firefox or Safari? Please, use another one here.
+  h2.text-center.text-2xl.my-4 Question to fall in love
+  .p-4.flex.flex-col.gap-2.text-sm(v-if="!midi.enabled") This interactive experience needs Web MIDI API support. Unfortunately, your current browser doesn't provide it. Is it Firefox or Safari? Please, use another one here.
 
     a.button.p-4.flex.items-center(href="https://chrome.google.com" target="_blank")
       icon-la-chrome.text-2xl
@@ -56,7 +56,7 @@ const steps = reactive({
     .flex.items-center.my-4(v-for="(step, name) in steps" :key="name")
       input.transform.scale-200(type="checkbox" :disabled="step.disabled" :id="name" v-model="step.checked")
       label.ml-4(:for="name") {{ step.text }}
-  button.button.mx-auto.w-full.font-bold(@click="init(); started = true") Start
+  button.button.mx-auto.w-full.font-bold(@click="init(); started = true; $router.push('1')") Start
 </template>
 
 <style lang="postcss" scoped>
