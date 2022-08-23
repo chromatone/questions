@@ -21,7 +21,7 @@ const { midi } = useMidi();
     )
   transition(name="fade")
     .panel(v-if="panel" ref="target")
-      .button.cursor-pointer.p-1.absolute.top-4.right-4.z-100(@click="panel = false")
+      .button.cursor-pointer.p-1.absolute.top-4.left-4.z-100(@click="panel = false")
         icon-la-times
       midi-panel
 </template>

@@ -20,11 +20,8 @@ function cycle() {
 </script>
 
 <template lang='pug'>
+
 .flex.gap-4.absolute.flex-col.right-2.bottom-2.top-20.text-xl.items-center.opacity-40.hover_opacity-100.transition.justify-between.items-center
-  .flex-0.flex.flex-col.gap-1
-    state-fullscreen(v-tooltip.left="'Toggle fullscreen mode'")
-    state-dark(v-tooltip.left="'Toggle dark mode'")
-    midi-state(v-tooltip.left="'MIDI state'")
   .flex-auto
   .flex-0.flex.flex-col.items-center.gap-2
 
@@ -42,6 +39,10 @@ function cycle() {
     state-bpm(v-tooltip.left="'Increment tempo'")
     button.button.w-16(@click="synthReleaseAll('+1n')" v-tooltip.left="'Turn off all synth voices'")
       icon-la-times-circle
+.flex-0.flex.flex-col.gap-1.absolute.left-0.bottom-0.opacity-40.hover_opacity-100.p-4
+  state-fullscreen(v-tooltip.right="'Toggle fullscreen mode'")
+  state-dark(v-tooltip.right="'Toggle dark mode'")
+  midi-state(v-tooltip.right="'MIDI state'")
 </template>
 
 <style lang="postcss" scoped>

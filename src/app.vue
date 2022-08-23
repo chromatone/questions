@@ -160,7 +160,7 @@ onKeyStroke('ArrowLeft', (e) => {
 }
 
 .panel {
-  @apply absolute p-4 m-4 bg-light-300 dark_bg-dark-300 z-20 flex flex-col gap-2 bg-opacity-90 dark_bg-opacity-90 flex items-center shadow-lg rounded-xl overflow-hidden right-2 bottom-2 max-w-sm overflow-y-scroll max-h-80vh;
+  @apply absolute p-4 m-4 bg-light-300 dark_bg-dark-300 z-20 flex flex-col gap-2 bg-opacity-90 dark_bg-opacity-90 flex items-center shadow-lg rounded-xl overflow-hidden left-2 bottom-2 max-w-sm overflow-y-scroll max-h-80vh;
 }
 </style>
 
