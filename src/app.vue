@@ -5,10 +5,10 @@ import ColorHash from "color-hash";
 import { useScene, activeScene } from '~/use/scene';
 import { useMidi, useKeyboard } from '~/use/midi'
 import { useRoute, useRouter } from 'vue-router'
-import { onKeyStroke } from '@vueuse/core';
 import { init } from './use/synth';
-import { lastNote } from './use/state';
+import { isDark, lastNote } from './use/state';
 import { pitchColor } from './use/chromatone';
+import { onKeyStroke } from '@vueuse/core'
 
 
 const { midi } = useMidi()
@@ -41,22 +41,29 @@ const changed = ref(false)
 
 watch(() => midi.total.hits, hits => {
   if (hits == 0) {
-    router.push(randomScene())
+    router.push(nextScene())
   }
 })
 
 onKeyStroke([' ', 'Enter'], () => {
   init()
-  router.push(randomScene())
+  router.push(nextScene())
 })
 
-function randomScene() {
+function nextScene(back) {
   changed.value = true
   lastNote.value = midi?.note?.pitch
-  if (Number(route.path.slice(1)) > 35) {
-    return 1 + ''
+  if (back) {
+    if (Number(route.path.slice(1)) < 1) {
+      return 36 + ''
+    }
+  } else {
+    if (Number(route.path.slice(1)) > 35) {
+      return 0 + ''
+    }
   }
-  return Number(route.path.slice(1)) + 1 + ''
+  let diff = back ? -1 : 1
+  return Number(route.path.slice(1)) + diff + ''
 }
 
 onMounted(() => {
@@ -64,13 +71,24 @@ onMounted(() => {
 })
 
 
+onKeyStroke('ArrowRight', (e) => {
+  e.preventDefault()
+  router.push(nextScene())
+})
+
+onKeyStroke('ArrowLeft', (e) => {
+  e.preventDefault()
+  router.push(nextScene(true))
+})
+
+
 </script>
 
 <template lang="pug">
-.flex.flex-col.h-100vh.w-full(:style="{ backgroundColor: pitchColor(lastNote, 9) }")
+.flex.flex-col.h-100vh.w-full(:style="{ backgroundColor: pitchColor(lastNote, isDark ? 1 : 9, 0.5) }")
   // (:style="{ background }"  )
   state-overlay
-  .absolute.bottom-10vh.text-center.flex.flex-col.items-center.mx-8(v-if="!changed")
+  .absolute.bottom-10vh.text-center.flex.flex-col.items-center.w-full.px-8(v-if="!changed")
     .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question
   state-start(@start="$router.push($route.params?.num || '1')")
   .h-full.w-full
