@@ -134,7 +134,10 @@ onKeyStroke('ArrowLeft', (e) => {
     router-view(v-slot="{ Component }")
       transition(name="fade" mode="out-in")
         component#content(:is="Component" :key="route.params")
-
+  .arrow.right-0(@click="nextScene()")
+    icon-la-angle-right  
+  .arrow.left-0(@click="nextScene(true)")
+    icon-la-angle-left
 //debug
 </template>
 
@@ -145,6 +148,10 @@ onKeyStroke('ArrowLeft', (e) => {
 
 .nav {
   @apply rounded-lg flex items-center flex-1 w-full bg-dark-50/40 hover_no-underline hover_shadow transition hover_bg-light-50/80;
+}
+
+.arrow {
+  @apply p-2 text-4xl absolute top-40vh bg-dark-200 bg-opacity-20 cursor-pointer opacity-30 hover_opacity-90 transition select-none;
 }
 
 .button {
