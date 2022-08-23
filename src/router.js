@@ -10,7 +10,7 @@ const router = createRouter({
       component: Phrase
     },
     {
-      path: '/:num',
+      path: '/:set/:num',
       name: 'phrase',
       component: Phrase,
       props: true

@@ -56,7 +56,7 @@ export default defineConfig({
     }),
     WindiCSS({
       scan: {
-        dirs: ['./', '.vitepress'],
+        dirs: ['./'],
         include: ['index.md'],
         exclude: ['**/examples/**/*', '/node_modules/'],
         fileExtensions: ['vue', 'ts', 'md'],
@@ -100,11 +100,11 @@ export default defineConfig({
     sourcemap: true,
     chunkSizeWarningLimit: Infinity,
     rollupOptions: {
-      manualChunks: () => 'main.js'
+      manualChunks: {
+        'tone': ['tone'],
+        'midi': ['webmidi'],
+        'use': ['@vueuse/core', '@vueuse/math', '@vueuse/gesture']
+      }
     }
-  },
-  //@ts-ignore
-  ssr: {
-    noExternal: ['tone']
   },
 })

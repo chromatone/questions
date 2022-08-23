@@ -9,6 +9,7 @@ import { init } from './use/synth';
 import { isDark, lastNote } from './use/state';
 import { pitchColor } from './use/chromatone';
 import { onKeyStroke } from '@vueuse/core'
+import questions from './questions.json'
 
 
 const { midi } = useMidi()
@@ -41,29 +42,43 @@ const changed = ref(false)
 
 watch(() => midi.total.hits, hits => {
   if (hits == 0) {
-    router.push(nextScene())
+    nextScene()
   }
 })
 
 onKeyStroke([' ', 'Enter'], () => {
   init()
-  router.push(nextScene())
+
+  nextScene()
 })
 
-function nextScene(back) {
+function nextScene(back = false) {
   changed.value = true
   lastNote.value = midi?.note?.pitch
-  if (back) {
-    if (Number(route.path.slice(1)) < 1) {
-      return 36 + ''
+  const { set, num } = route.params
+
+  let diff = back ? -1 : 1
+
+  let Num = Number(num) - 1
+  let Set = Number(set) - 1
+  let path = ''
+
+  if (questions[Set]) {
+    if (questions[Set][Num + 1 + diff]) {
+      path = `/${Set + 1}/${Num + 1 + diff}`
+    } else {
+      if (Set + diff > 0 && Set + 1 < questions.length) {
+        path = `/${Set + 1 + diff}/${!back ? 0 : questions[Set + diff].length}`
+      } else {
+        path = `/${1}/${1}`
+      }
     }
   } else {
-    if (Number(route.path.slice(1)) > 35) {
-      return 0 + ''
-    }
+    path = `/${1}/${1}`
   }
-  let diff = back ? -1 : 1
-  return Number(route.path.slice(1)) + diff + ''
+
+  router.push(path)
+
 }
 
 onMounted(() => {
@@ -73,12 +88,12 @@ onMounted(() => {
 
 onKeyStroke('ArrowRight', (e) => {
   e.preventDefault()
-  router.push(nextScene())
+  nextScene()
 })
 
 onKeyStroke('ArrowLeft', (e) => {
   e.preventDefault()
-  router.push(nextScene(true))
+  nextScene(true)
 })
 
 
@@ -89,8 +104,8 @@ onKeyStroke('ArrowLeft', (e) => {
   // (:style="{ background }"  )
   state-overlay
   .absolute.bottom-10vh.text-center.flex.flex-col.items-center.w-full.px-8(v-if="!changed")
-    .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question
-  state-start(@start="$router.push($route.params?.num || '1')")
+    .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question 
+  state-start(@start="$router.push('/1/1')")
   .h-full.w-full
     svg#visual.h-full.w-full(
       ref="visual"
@@ -110,10 +125,15 @@ onKeyStroke('ArrowLeft', (e) => {
         :height="height"
         )
       scene-stats
-      scene-grow
+      g(:transform="`translate(${width / 2},${height / 2})`" )
+        circle.transition(
+          r="100"
+          :style="{ transform: `scale(${1 + 2 * midi.duration / midi.maxDuration})` }"
+          :fill="pitchColor(midi?.note?.pitch, 3, 1, midi.duration / midi.maxDuration)"
+          )
     router-view(v-slot="{ Component }")
       transition(name="fade" mode="out-in")
-        component#content(:is="Component")
+        component#content(:is="Component" :key="route.params")
 
 //debug
 </template>
