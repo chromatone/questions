@@ -70,11 +70,11 @@ function nextScene(back = false) {
       if (Set + diff > 0 && Set + 1 < questions.length) {
         path = `/${Set + 1 + diff}/${!back ? 0 : questions[Set + diff].length}`
       } else {
-        path = `/${1}/${1}`
+        path = `/${1}/${0}`
       }
     }
   } else {
-    path = `/${1}/${1}`
+    path = `/${1}/${0}`
   }
 
   router.push(path)
@@ -105,7 +105,7 @@ onKeyStroke('ArrowLeft', (e) => {
   state-overlay
   .absolute.bottom-10vh.text-center.flex.flex-col.items-center.w-full.px-8(v-if="!changed")
     .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question 
-  state-start(@start="$router.push('/1/1')")
+  state-start(@start="$router.push('/1/0')")
   .h-full.w-full
     svg#visual.h-full.w-full(
       ref="visual"

@@ -14,5 +14,5 @@ const props = defineProps({
 .absolute.top-0.bottom-0.left-0.right-0.flex.items-center.justify-center.pointer-events-none.flex-col
 	.absolute.p-4.text-4xl.opacity-40.transition.top-20.text-shadow-md(:style="{ color: pitchColor(midi?.note?.pitch, null, 0.5) }")  Set {{ set || 0 }}
 	.absolute.p-4.text-28xl.opacity-20.transition.text-shadow-xl(v-if="Number(num)" :style="{ color: pitchColor(midi?.note?.pitch) }") {{ num || 0 }}
-	.p-4.text-4xl.text-center.p-8.text-shadow-md {{ questions?.[set - 1]?.[num] }}
+	.p-4.text-4xl.text-center.p-8.text-shadow-md.max-w-50ch(:style="{ fontSize: num == 0 ? '1.2em' : '' }") {{ questions?.[set - 1]?.[num] }}
 </template>
