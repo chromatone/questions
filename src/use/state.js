@@ -3,6 +3,8 @@ import { getDestination, gainToDb } from 'tone'
 
 export const isDark = useDark()
 
+export const lastNote = ref()
+
 const audio = reactive({
   initiated: false,
   mute: useStorage('mute', false),

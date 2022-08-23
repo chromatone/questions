@@ -1,9 +1,12 @@
 <script setup>
 import { midi } from '~/use/midi';
 import { useScene } from '~/use/scene';
+import { pitchColor } from '~/use/chromatone'
+
 const { width, height } = useScene()
 
 const acc = 200
+
 
 </script>
 
@@ -22,30 +25,13 @@ g.text-overlay.select-none(fill="currentColor")
       x="8"
       y="12"
     )
-  g(:transform="`translate(${width / 2},${height - 60})`" opacity="0.7")
-    rect(
-      :x="-acc / 2"
-      :width="acc"
-      height="10"
-      stroke="currentColor"
-      fill="none"
-      rx="4"
-    )
-    rect(
-      :x="-acc / 2"
-      :width="acc"
-      :transform="`scale(${midi.duration / midi.maxDuration},1)`"
-      height="10"
-      fill="currentColor"
-      rx="4"
-    )
   text(
     text-anchor="middle"
     fill="currentColor"
     :x="width / 2"
     :y="30"
     v-tooltip.bottom="'Current note'"
-  ) {{ midi?.note?.identifier }}
+  ) {{ midi?.note?.identifier }} 
   text(
     v-tooltip.bottom-end="'Session time: playing / total'"
     fill="currentColor"
@@ -59,7 +45,7 @@ g.text-overlay.select-none(fill="currentColor")
     text-anchor="middle"
     opacity="0.6"
   ) 
-    tspan.font-normal Made by
+    tspan.font-normal Made by 
     tspan(dx="4")
       a(href="https://chromatone.center" target="_blank") Chromatone
     tspan(dx="4") for

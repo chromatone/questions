@@ -3,6 +3,7 @@ import { init, synthOptions } from '~/use/synth'
 import { midi } from '~/use/midi'
 import { useStorage } from '@vueuse/core';
 
+const emit = defineEmits(['start'])
 
 const started = ref(false)
 
@@ -56,7 +57,7 @@ const steps = reactive({
     .flex.items-center.my-4(v-for="(step, name) in steps" :key="name")
       input.transform.scale-200(type="checkbox" :disabled="step.disabled" :id="name" v-model="step.checked")
       label.ml-4(:for="name") {{ step.text }}
-  button.button.mx-auto.w-full.font-bold(@click="init(); started = true; $router.push('1')") Start
+  button.button.mx-auto.w-full.font-bold(@click="init(); started = true; $emit('start')") Start
 </template>
 
 <style lang="postcss" scoped>

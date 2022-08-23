@@ -7,6 +7,8 @@ import { useMidi, useKeyboard } from '~/use/midi'
 import { useRoute, useRouter } from 'vue-router'
 import { onKeyStroke } from '@vueuse/core';
 import { init } from './use/synth';
+import { lastNote } from './use/state';
+import { pitchColor } from './use/chromatone';
 
 
 const { midi } = useMidi()
@@ -50,6 +52,10 @@ onKeyStroke([' ', 'Enter'], () => {
 
 function randomScene() {
   changed.value = true
+  lastNote.value = midi?.note?.pitch
+  if (Number(route.path.slice(1)) > 35) {
+    return 1 + ''
+  }
   return Number(route.path.slice(1)) + 1 + ''
 }
 
@@ -61,14 +67,12 @@ onMounted(() => {
 </script>
 
 <template lang="pug">
-.flex.flex-col.h-100vh.w-full 
+.flex.flex-col.h-100vh.w-full(:style="{ backgroundColor: pitchColor(lastNote, 9) }")
   // (:style="{ background }"  )
   state-overlay
-  .absolute.bottom-20.text-center.flex.flex-col.items-center.w-full(v-if="!changed")
+  .absolute.bottom-10vh.text-center.flex.flex-col.items-center.mx-8(v-if="!changed")
     .text-sm Hold any note more than {{ midi.maxDuration / 1000 }} seconds or press Enter/Spacebar to proceed to the next question
-  state-start
-  transition(name="fade")
-    stats-panel()
+  state-start(@start="$router.push($route.params?.num || '1')")
   .h-full.w-full
     svg#visual.h-full.w-full(
       ref="visual"
@@ -88,6 +92,7 @@ onMounted(() => {
         :height="height"
         )
       scene-stats
+      scene-grow
     router-view(v-slot="{ Component }")
       transition(name="fade" mode="out-in")
         component#content(:is="Component")
